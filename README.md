@@ -81,3 +81,18 @@ The project uses WebDriverIO as the test automation framework. Configuration can
 Test execution reports and artifacts can be found in the following locations:
 - Logs: `src/artifacts/logs`
 - Screenshots: `src/artifacts/screenshots`
+
+
+## Known Issues and Workarounds
+
+### ⚠️ `clearValue()` behavior on Firefox and Chrome
+
+During test execution, the native WebdriverIO `clearValue()` method presented inconsistent behavior across browsers, particularly in **Firefox** and **Chrome**.  
+In certain cases, the input fields were not fully cleared before entering new text, leading to **intermittent login failures** or **invalid field data**.
+
+#### 💡 Implemented Solution
+
+To address this, a **custom field-clearing workaround** was implemented within the Page Object Model.  
+Instead of relying solely on `clearValue()`, the input fields are cleared using a **combination of simulated key presses** (e.g., `Ctrl + A` followed by `Backspace`) to ensure reliability across browsers.
+
+This approach, although slightly unconventional, effectively mitigates the issue and guarantees consistent test execution results across multiple browser environments.

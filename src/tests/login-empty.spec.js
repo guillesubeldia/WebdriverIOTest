@@ -4,24 +4,24 @@ import creds from '../data/credentials.json' assert { type: 'json' }
 //UC-1 | Login with empty fields.
 describe('Feature: Login Field Validation', () => {
   describe('Scenario: Login attempt with empty fields', () => {
-    // Given
+    // Open the login page before each test
     beforeEach(async () => {
       await LoginPage.open()
     })
 
     // When/Then
     it('should show error message when all fields are empty', async () => {
-      // When - usuario ingresa credenciales y luego las borra
+      // when - Enter invalid credentials first, then clear both fields
       await LoginPage.setUsername(creds.wrong.username)
       await LoginPage.setPassword(creds.wrong.password)
       await browser.pause(2000)
       await LoginPage.clearFieldsChrome()
       
-      // When - intenta iniciar sesión
+      // When - Attempt to log in with empty fields
       await browser.pause(2000)
       await LoginPage.submit()
       
-      // Then - debería ver mensaje de error
+      // Then - Verify that the correct error message is displayed
       const msg = await LoginPage.getErrorText()
       await browser.pause(2000)
       expect(msg).toContain('Epic sadface: Username is required')
@@ -29,11 +29,3 @@ describe('Feature: Login Field Validation', () => {
 })
 })
 
-//Password vacío muestra error
-// Feature: Login Swag Labs
-  //   Scenario: Campo de password vacío
-  //     Given el usuario está en la página de login
-  //     When completa solo el campo de usuario con "test"
-  //     And deja el campo de password vacío
-  //     And presiona el botón "Login"
-  //     Then el sistema muestra el mensaje "Epic sadface: Password is required"

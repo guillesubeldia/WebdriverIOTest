@@ -24,12 +24,10 @@ async clearPassword() {
     // 1. Determinar el sistema operativo para la tecla "Seleccionar Todo"
     const isMac = (await browser.execute(() => navigator.platform)).includes('Mac');
     const selectAllKey = isMac ? 'Meta' : 'Control'; // 'Meta' es el Command Key
-
     // 2. Obtener el nombre del navegador
     const browserName = browser.capabilities.browserName;
 
     if (browserName === 'chrome') {
-      
         //Ejecutando clearPassword: Método de simulación Ctrl+A + Delete (Chrome Workaround).'
         const passwordEl = await this.inputPassword; // Resolver el elemento
         // 3. Aplicar la simulación de borrado
@@ -50,7 +48,7 @@ async clearPassword() {
     }
   }
   async clearFields() { 
-        //en firefox a veces no limpia bien los campos, por eso se hace doble clear
+    //en firefox a veces no limpia bien los campos, por eso se hace doble clear
     await this.inputUsername.setValue('');
     await this.inputPassword.setValue('');
 
@@ -69,9 +67,7 @@ async clearPassword() {
         //ejecute el comando de teclado para seleccionar todo y borrar, porque el clearValue a veces no funciona bien en Chrome
         const usernameEl = await this.inputUsername;
         const passwordEl = await this.inputPassword;
-        
         const inputs = [usernameEl, passwordEl];
-        
         for (const el of inputs) {
             // 1. Clic para enfocar el elemento
             await el.click();
