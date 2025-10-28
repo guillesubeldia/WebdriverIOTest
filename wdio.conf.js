@@ -21,10 +21,12 @@ exports.config = {
     // The path of the spec files will be resolved relative from the directory of
     // of the config file unless it's absolute.
     //
-    specs: ['./src/specs/**/*.js'],
+    specs: [
+        './src/tests/**/*.js',
+        
+    ],
     // Patterns to exclude.
     exclude: [
-        // 'path/to/excluded/files'
     ],
     //
     // ============
@@ -42,7 +44,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 2,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -50,8 +52,26 @@ exports.config = {
     //
     services: [],
     capabilities: [
-        {        browserName: 'firefox'    },
-        {        browserName: 'chrome'    }
+        {
+        browserName: 'firefox',
+        maxInstances: 1,
+        },
+        {
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+            args: [
+            '--disable-autofill-keyboard-accessory-view',
+            '--disable-autofill',         // evita autocompletar
+            '--disable-save-password-bubble',
+            '--disable-extensions'
+            ],
+            prefs: {
+            'profile.password_manager_enabled': false,
+            'credentials_enable_service': false
+            }
+        },
+        maxInstances: 1,
+        }
     ],
 
     //
@@ -62,6 +82,16 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'info',
+    outputDir: './src/artifacts/logs',    // WDIO crea logs por worker aquí
+    reporters: ['spec'],
+
+    beforeTest: function (test) {
+    console.log(`[START] ${test.parent} > ${test.title}`);
+    },
+    afterTest: async function (test, _ctx, { error, duration }) {
+        const status = error ? 'FAIL' : 'PASS';
+        console.log(`[${status}] (${duration}ms) ${test.parent} > ${test.title}`);
+    },
     //
     // Set specific log levels per logger
     // loggers:
