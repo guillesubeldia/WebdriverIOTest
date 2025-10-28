@@ -1,14 +1,16 @@
 import { expect } from '@wdio/globals'
 import LoginPage from '../pages/loginPom.page.js'
 import creds from '../data/credentials.json' assert { type: 'json' }
+//UC-2 | Login with invalid credentials: empty password.
+describe('Feature: Login Validation', () => {
+  describe('Scenario: Login attempt with empty password', () => {
+    // Given
+    beforeEach(async () => {
+      await LoginPage.open()
+    })
 
-describe('UC-2 | Login with invalid credentials', () => {
-
-  beforeEach(async () => {
-    await LoginPage.open()
-  })
-
-  it('Empty password', async () => {
+    // When/Then
+    it('should show error message for empty password', async () => {
     await LoginPage.setUsername(creds.wrong.username)
     await LoginPage.setPassword(creds.wrong.password)
     await browser.pause(2000)
@@ -20,12 +22,4 @@ describe('UC-2 | Login with invalid credentials', () => {
     expect(msg).toContain('Epic sadface: Password is required')
   })
   })
-
-//Credenciales inválidas muestran error
-// Feature: Login Swag Labs
-  //   Scenario: Credenciales incorrectas
-  //     Given el usuario está en la página de login
-  //     When completa el campo de usuario con "test"
-  //     And completa el campo de password con "test"
-  //     And presiona el botón "Login"
-  //     Then el sistema muestra el mensaje "Epic sadface: Username and password do not match any user"
+})
